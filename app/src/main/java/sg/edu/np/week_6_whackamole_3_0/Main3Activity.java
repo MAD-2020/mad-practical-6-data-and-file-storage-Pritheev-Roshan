@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-public class Main3Activity extends AppCompatActivity {
+import java.util.ArrayList;
+
+public class Main3Activity extends AppCompatActivity implements RecyclerViewTouchListener {
     /* Hint:
         1. This displays the available levels from 1 to 10 to the user.
         2. The different levels makes use of the recyclerView and displays the highest score
@@ -28,6 +30,14 @@ public class Main3Activity extends AppCompatActivity {
     private static final String FILENAME = "Main3Activity.java";
     private static final String TAG = "Whack-A-Mole3.0!";
 
+    String Username;
+    Button returnToLogin;
+    RecyclerView levelRecycler;
+    MyDBHandler handler;
+    ArrayList<String> levelNumberList;
+    ArrayList<String> topScoreList;
+    CustomScoreAdaptor scoreAdaptor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +48,42 @@ public class Main3Activity extends AppCompatActivity {
 
         Log.v(TAG, FILENAME + ": Show level for User: "+ userName);
          */
+
+        returnToLogin = findViewById(R.id.returnLoginButton);
+        levelRecycler  =findViewById(R.id.recyclerView);
+        handler = new MyDBHandler(this, "WhackAMole.db", null, 1);
+
+        Intent receiver =  getIntent();
+        Username = receiver.getStringExtra("Username");
+        Log.v(TAG, FILENAME + ": Show level for User: "+ Username);
+
+        UserData currentUser = handler.findUser(Username);
+
+        scoreAdaptor = new CustomScoreAdaptor(currentUser, this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+
+        levelRecycler.setAdapter(scoreAdaptor);
+        levelRecycler.setLayoutManager(layoutManager);
+        levelRecycler.setItemAnimator(new DefaultItemAnimator());
+
+        returnToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Main3Activity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+    }
+
+    @Override
+    public void levelClicked(int argLevel, String argUsername)
+    {
+        Intent intent = new Intent(Main3Activity.this, Main4Activity.class);
+        intent.putExtra("Username", argUsername);
+        intent.putExtra("Level", String.valueOf(argLevel));
+        startActivity(intent);
     }
 
     @Override

@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.util.ArrayList;
@@ -27,6 +29,12 @@ public class Main2Activity extends AppCompatActivity {
     private static final String FILENAME = "Main2Activity.java";
     private static final String TAG = "Whack-A-Mole3.0!";
 
+    EditText username;
+    EditText password;
+    Button cancelButton;
+    Button createButton;
+    MyDBHandler handler;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,10 +51,64 @@ public class Main2Activity extends AppCompatActivity {
             Log.v(TAG, FILENAME + ": User already exist during new user creation!");
 
          */
+        username = findViewById(R.id.username);
+        password = findViewById(R.id.password);
+        cancelButton = findViewById(R.id.cancelButton);
+        createButton = findViewById(R.id.createButton);
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v(TAG, "Cancel user creation");
+                Intent intent = new Intent(Main2Activity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     protected void onStop() {
         super.onStop();
         finish();
+    }
+
+    public void accountCreation(String argUsername, String argPassword, MyDBHandler argHandler)
+    {
+        if (argUsername == "" && argPassword == "")
+        {
+            Toast.makeText(getApplicationContext(), "Your Username or Password field is empty!", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            ArrayList<Integer> scoreList = new ArrayList<>();
+            ArrayList<Integer> levelList = new ArrayList<>();
+            UserData account = argHandler.findUser(argUsername);
+
+            if (account == null)
+            {
+                for (int i = 1; i <= 10; i++)
+                {
+                    levelList.add(i);
+                    scoreList.add(0);
+                }
+                UserData newUser = new UserData(argUsername, argPassword, levelList, scoreList);
+                argHandler.addUser(newUser);
+                Log.v(TAG, FILENAME + ": New user created successfully!");
+                finish();
+            }
+            else
+            {
+                Log.v(TAG, FILENAME + ": User already exist during new user creation!");
+                Toast.makeText(getApplicationContext(), "User already exists!", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    public void onClick(View v)
+    {
+        String inputUsername = username.getText().toString();
+        String inputPassword = password.getText().toString();
+        accountCreation(inputUsername, inputPassword, handler);
+
     }
 }

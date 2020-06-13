@@ -5,4 +5,10 @@
     <string name="Password">Password</string>
     <string name="Login">Login</string>
     <string name="NewUser">New User? Click Here</string>
+    <string name="CreateNewUser">Create New User</string>
+    <string name="Create">Create</string>
+    <string name="Cancel">Cancel</string>
+    <string name="PickLevel">Pick a level to begin!</string>
+    <string name="ReturnLogin">Return to login</string>
+    <string name="Back">Back</string>
 </resources>
