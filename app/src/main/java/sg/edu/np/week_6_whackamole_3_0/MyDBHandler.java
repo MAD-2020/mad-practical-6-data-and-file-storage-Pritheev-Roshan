@@ -46,7 +46,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
     private static final String FILENAME = "MyDBHandler.java";
     private static final String TAG = "Whack-A-Mole3.0!";
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "WhackAMole.db";
     public static final String TABLE_ACCOUNTS = "Accounts";
     public static final String COLUMN_USERNAME = "Username";
