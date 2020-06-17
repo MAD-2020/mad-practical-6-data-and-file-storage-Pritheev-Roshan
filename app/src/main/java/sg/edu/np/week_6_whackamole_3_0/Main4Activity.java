@@ -125,8 +125,7 @@ public class Main4Activity extends AppCompatActivity {
         secondsTime = timeSetter(selectedLevel);
         if (secondsTime <= 5)
         {
-            setNewMole();
-            setNewMole();
+            setDoubleMoles();
         }
         else
         {
@@ -137,8 +136,6 @@ public class Main4Activity extends AppCompatActivity {
         readyTimer(secondsTime);
         handler = new MyDBHandler(this, "WhackAMole.db", null, 1);
         user = handler.findUser(Username);
-
-
 
         for(final int id : BUTTON_IDS){
             /*  HINT:
@@ -179,8 +176,7 @@ public class Main4Activity extends AppCompatActivity {
 
         if (Integer.parseInt(selectedLevel) - 1 >= 6)
         {
-            setNewMole();
-            setNewMole();
+            setDoubleMoles();
         }
         else
         {
@@ -189,7 +185,7 @@ public class Main4Activity extends AppCompatActivity {
         scoreText.setText(score[0] + "");
     }
 
-    public void setNewMole()
+    public int setNewMole()
     {
         /* Hint:
             Clears the previous mole location and gets a new random location of the next mole location.
@@ -205,6 +201,7 @@ public class Main4Activity extends AppCompatActivity {
         }
         Button moleButton = findViewById(BUTTON_IDS[randomLocation]);
         moleButton.setText("*");
+        return randomLocation;
 
     }
 
@@ -273,6 +270,28 @@ public class Main4Activity extends AppCompatActivity {
         }
 
         return timeSeconds;
+    }
+
+    public void setDoubleMoles()
+    {
+        int OriginalLocation = setNewMole();
+        ManualSetNewMole(OriginalLocation);
+    }
+
+    public void ManualSetNewMole(int OriginalLocation)
+    {
+        Random ran = new Random();
+        int SecondRanLocation = ran.nextInt(9);
+
+        if (SecondRanLocation == OriginalLocation)
+        {
+            ManualSetNewMole(OriginalLocation);
+        }
+        else
+        {
+            Button newMoleButton = findViewById(BUTTON_IDS[SecondRanLocation]);
+            newMoleButton.setText("*");
+        }
     }
 
 }

@@ -101,6 +101,8 @@ public class Main2Activity extends AppCompatActivity {
                 }
                 argHandler.addUser(new UserData(argUsername, argPassword, levelList, scoreList));
                 Log.v(TAG, FILENAME + ": New user created successfully!");
+                Intent intent = new Intent(Main2Activity.this, MainActivity.class);
+                startActivity(intent);
             }
             else
             {
