@@ -59,7 +59,7 @@ public class MyDBHandler extends SQLiteOpenHelper {
         /* HINT:
             This is used to init the database.
          */
-        super(context, name, factory, version);
+        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
     @Override
     public void onCreate(SQLiteDatabase db)
@@ -68,10 +68,12 @@ public class MyDBHandler extends SQLiteOpenHelper {
             This is triggered on DB creation.
             Log.v(TAG, "DB Created: " + CREATE_ACCOUNTS_TABLE);
          */
-        String CREATE_ACCOUNTS_TABLE = "CREATE TABLE " + TABLE_ACCOUNTS + "(" +COLUMN_USERNAME + " STRING, " +
+        String CREATE_ACCOUNTS_TABLE = "CREATE TABLE " + TABLE_ACCOUNTS +
+                "(" +
+                COLUMN_USERNAME + " STRING, " +
                 COLUMN_PASSWORD + " TEXT, " +
                 COLUMN_LEVEL + " INTEGER, " +
-                COLUMN_SCORE + "INTEGER, " +
+                COLUMN_SCORE + " INTEGER, " +
                 "PRIMARY KEY (" + COLUMN_USERNAME + ", " + COLUMN_LEVEL + "))";
         db.execSQL(CREATE_ACCOUNTS_TABLE);
 

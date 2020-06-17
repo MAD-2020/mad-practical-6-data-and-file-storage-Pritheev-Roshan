@@ -103,9 +103,10 @@ public class MainActivity extends AppCompatActivity {
          */
         UserData dbData = handler.findUser(userName);
         boolean output;
-        Log.v(TAG, FILENAME + ": Running Checks..." + dbData.getMyUserName() + ": " + dbData.getMyPassword() +" <--> "+ userName + " " + password);
+
         if (dbData != null)
         {
+            Log.v(TAG, FILENAME + ": Running Checks..." + dbData.getMyUserName() + ": " + dbData.getMyPassword() +" <--> "+ userName + " " + password);
             if (dbData.getMyUserName() == userName && dbData.getMyPassword() == password)
             {
                 output = true;

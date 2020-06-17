@@ -55,6 +55,17 @@ public class Main2Activity extends AppCompatActivity {
         password = findViewById(R.id.password);
         cancelButton = findViewById(R.id.cancelButton);
         createButton = findViewById(R.id.createButton);
+        handler = new MyDBHandler(this, "WhackAMole.db", null, 1);
+
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v(TAG, "Creating user!");
+                String inputUsername = username.getText().toString();
+                String inputPassword = password.getText().toString();
+                accountCreation(inputUsername, inputPassword, handler);
+            }
+        });
 
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,14 +85,11 @@ public class Main2Activity extends AppCompatActivity {
 
     public void accountCreation(String argUsername, String argPassword, MyDBHandler argHandler)
     {
-        if (argUsername == "" && argPassword == "")
-        {
-            Toast.makeText(getApplicationContext(), "Your Username or Password field is empty!", Toast.LENGTH_SHORT).show();
-        }
-        else
+        if (argUsername.length() != 0 && argPassword.length() != 0)
         {
             ArrayList<Integer> scoreList = new ArrayList<>();
             ArrayList<Integer> levelList = new ArrayList<>();
+
             UserData account = argHandler.findUser(argUsername);
 
             if (account == null)
@@ -91,8 +99,7 @@ public class Main2Activity extends AppCompatActivity {
                     levelList.add(i);
                     scoreList.add(0);
                 }
-                UserData newUser = new UserData(argUsername, argPassword, levelList, scoreList);
-                argHandler.addUser(newUser);
+                argHandler.addUser(new UserData(argUsername, argPassword, levelList, scoreList));
                 Log.v(TAG, FILENAME + ": New user created successfully!");
                 finish();
             }
@@ -102,13 +109,10 @@ public class Main2Activity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "User already exists!", Toast.LENGTH_SHORT).show();
             }
         }
+        else
+        {
+            Toast.makeText(getApplicationContext(), "Your Username or Password field is empty!", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    public void onClick(View v)
-    {
-        String inputUsername = username.getText().toString();
-        String inputPassword = password.getText().toString();
-        accountCreation(inputUsername, inputPassword, handler);
-
-    }
 }
